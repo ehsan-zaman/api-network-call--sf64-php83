@@ -110,10 +110,10 @@ curl --insecure --location 'https://localhost/charge/aci' \
 ## Using Console command `bin/app-charge`
 
 To use from cli, provide the following command
+```bash
+$ docker exec -it api-network-call--sf64-php83-php-1 bin/console app:charge <gateway>
 ```
-docker exec -it api-network-call--sf64-php83-php-1 bin/console app:charge <gateway>
-```
-Please, note that, it is assumed that the directory name is same as git repository.
+Please, note that, in the preceeding command it is assumed that the default image prefix is being used.
 
 The `{gateway}` parameter can be either `shift4` or `aci` and it is case senitive. When running, the command will ask for the same parameters required in the API endpoint. After providing valid values, it will confirm the paramters and then perform the transaction and will show the result.
 
