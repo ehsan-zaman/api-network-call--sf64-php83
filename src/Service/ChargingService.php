@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Object\DTO\ChargingRequestDTO;
 use App\Charging\Client;
-use App\Charging\PaymentGateway\ACI\CreateSyncChargingRequest;
+use App\Charging\PaymentGateway\ACI\CreateSyncPaymentRequest;
 use App\Charging\PaymentGateway\ACI\CreateSyncPaymentResponseFormatter;
 use App\Charging\PaymentGateway\Shift4\CreateChargeRequest;
 use App\Charging\PaymentGateway\Shift4\CreateChargeResponseFormatter;
@@ -44,7 +44,7 @@ class ChargingService
      */
     public function chargeUsingACI(ChargingRequestDTO $chargingRequestDTO): array
     {
-        $chargeRequest = (new CreateSyncChargingRequest())
+        $chargeRequest = (new CreateSyncPaymentRequest())
             ->setEntityId('8a8294174b7ecb28014b9699220015ca')
             ->setAmount($chargingRequestDTO->getAmount())
             ->setCurrency('EUR')
@@ -58,7 +58,7 @@ class ChargingService
             ->buildParameters();
 
         $client = new Client(new CreateSyncPaymentResponseFormatter());
-        return $client->send($chargeRequest);
+        return $client->send($chargeRequest)->toArray();
     }
 
     /**
@@ -70,7 +70,7 @@ class ChargingService
      * @param ChargingRequestDTO $chargingRequestDTO - charging related information
      * @return array
      */
-    public function chargeUsingShift4(ChargingRequestDTO $chargingRequestDTO)
+    public function chargeUsingShift4(ChargingRequestDTO $chargingRequestDTO): array
     {
         $chargeRequest = (new CreateChargeRequest())
             ->setAmount($chargingRequestDTO->getAmount())
@@ -80,6 +80,6 @@ class ChargingService
             ->buildParameters();
 
         $client = new Client(new CreateChargeResponseFormatter());
-        return $client->send($chargeRequest);
+        return $client->send($chargeRequest)->toArray();
     }
 }

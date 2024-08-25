@@ -4,6 +4,7 @@ namespace App\Charging;
 
 use App\Charging\Interface\RequestInterface;
 use App\Charging\Interface\ResponseFormatterInterface;
+use App\Interface\Arrayable;
 use Symfony\Component\HttpClient\HttpClient;
 
 /**
@@ -14,7 +15,7 @@ class Client
     public function __construct(private ResponseFormatterInterface $responseFormatter)
     {}
 
-    public function send(RequestInterface $request): array
+    public function send(RequestInterface $request): Arrayable
     {
         $response = HttpClient::create()->request(
             $request->getMethod(),

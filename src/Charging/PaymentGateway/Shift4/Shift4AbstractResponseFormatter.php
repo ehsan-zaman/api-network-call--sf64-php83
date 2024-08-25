@@ -11,7 +11,7 @@ abstract class Shift4AbstractResponseFormatter implements ResponseFormatterInter
     /**
      * @throws InvalidArgumentException
      */
-    public function format(ResponseInterface $response): array
+    public function validateResponse(ResponseInterface $response): array
     {
         $responseArray = $response->toArray(false);
         $statusCode = $response->getStatusCode();

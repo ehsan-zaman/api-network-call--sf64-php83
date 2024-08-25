@@ -7,5 +7,5 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 interface ResponseFormatterInterface
 {
-    public function format(ResponseInterface $response): array;
+    public function format(ResponseInterface $response): Arrayable;
 }

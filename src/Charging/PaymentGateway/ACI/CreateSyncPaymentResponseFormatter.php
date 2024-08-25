@@ -2,6 +2,7 @@
 
 namespace App\Charging\PaymentGateway\ACI;
 
+use App\Charging\Response\ChargingResponse;
 use DateTimeImmutable;
 use DateTimeZone;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -11,18 +12,15 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class CreateSyncPaymentResponseFormatter extends ACIAbstractResponseFormatter
 {
-    public function format(ResponseInterface $response): array
+    public function format(ResponseInterface $response): ChargingResponse
     {
-        $responseArray = parent::format($response);
+        $responseArray = $this->validateResponse($response);
 
-        return [
-            'transactionId' => $responseArray['id'],
-            'dateOfCreation' => DateTimeImmutable::createFromFormat(
-                'Y-m-d H:i:s.vO', $responseArray['timestamp']
-                )->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.vO'),
-            'amount' => $responseArray['amount'],
-            'currency' => $responseArray['currency'],
-            'cardBin' => $responseArray['card']['bin'],
-        ];
+        return (new ChargingResponse())
+            ->setTransactionId($responseArray['id'])
+            ->setDateOfCreation(DateTimeImmutable::createFromFormat('Y-m-d H:i:s.vO', $responseArray['timestamp']))
+            ->setAmount($responseArray['amount'])
+            ->setCurrency($responseArray['currency'])
+            ->setCardBin($responseArray['card']['bin']);
     }
 }

@@ -11,7 +11,7 @@ abstract class ACIAbstractResponseFormatter implements ResponseFormatterInterfac
     /**
      * @throws InvalidArgumentException
      */
-    public function format(ResponseInterface $response): array
+    public function validateResponse(ResponseInterface $response): array
     {
         $responseArray = $response->toArray(false);
         $statusCode = $response->getStatusCode();

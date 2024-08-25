@@ -5,7 +5,7 @@ namespace App\Charging\PaymentGateway\ACI;
 /**
  * This class is like a data container for ACI's payment request
  */
-class CreateSyncChargingRequest extends ACIAbstractRequest
+class CreateSyncPaymentRequest extends ACIAbstractRequest
 {
     private string $entityId;
 

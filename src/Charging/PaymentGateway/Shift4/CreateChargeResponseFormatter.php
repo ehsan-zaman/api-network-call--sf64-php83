@@ -2,6 +2,7 @@
 
 namespace App\Charging\PaymentGateway\Shift4;
 
+use App\Charging\Response\ChargingResponse;
 use DateTimeImmutable;
 use DateTimeZone;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -11,17 +12,15 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class CreateChargeResponseFormatter extends Shift4AbstractResponseFormatter
 {
-    public function format(ResponseInterface $response): array
+    public function format(ResponseInterface $response): ChargingResponse
     {
-        $responseArray = parent::format($response);
+        $responseArray = $this->validateResponse($response);
 
-        return [
-            'transactionId' => $responseArray['id'],
-            'dateOfCreation' => (new DateTimeImmutable('@'.$responseArray['created']))
-                ->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.vO'),
-            'amount' => $responseArray['amount'],
-            'currency' => $responseArray['currency'],
-            'cardBin' => $responseArray['card']['first6'],
-        ];
+        return (new ChargingResponse())
+            ->setTransactionId($responseArray['id'])
+            ->setDateOfCreation(new DateTimeImmutable('@'.$responseArray['created']))
+            ->setAmount($responseArray['amount'])
+            ->setCurrency($responseArray['currency'])
+            ->setCardBin($responseArray['card']['first6']);
     }
 }
