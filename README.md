@@ -15,7 +15,9 @@ $ docker compose up -d
 ```
 The first command can be skipped if the image is already built and no customization is done.
 
-Now, the project is up and running. Currently, there are 2 ways to perform the charging attempt. Using
+Now, the project is up and running. Visiting the url - [https://localhost](https://localhost) will confirm the claim. As the docker configures the server to use SSL, it might be needed to accept the risk that is mentioned in the browser. And for using postman or other medium, it might be needed to disable the ssl verifier.
+
+Currently, there are 2 ways to perform the charging attempt. Using
 
 1. API endpoint `/payment/{gateway}` or
 2. Console command `bin/app-charge`
