@@ -4,7 +4,7 @@ namespace App\Object\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PaymentRequestDTO
+class ChargingRequestDTO
 {
     #[Assert\NotBlank(message: "'amount' must be provided and have a valid numeric value")]
     #[Assert\GreaterThan(0, message: "'amount' must be valid and greater than 0")]

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Payment\Gateway\ACI;
+namespace App\Charging\PaymentGateway\Shift4;
 
 use DateTimeImmutable;
 use DateTimeZone;
@@ -9,7 +9,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 /**
  * Main responsibility - to format response to a specific structure
  */
-class CreateSyncPaymentResponseFormatter extends ACIAbstractResponseFormatter
+class CreateChargeResponseFormatter extends Shift4AbstractResponseFormatter
 {
     public function format(ResponseInterface $response): array
     {
@@ -17,12 +17,11 @@ class CreateSyncPaymentResponseFormatter extends ACIAbstractResponseFormatter
 
         return [
             'transactionId' => $responseArray['id'],
-            'dateOfCreation' => DateTimeImmutable::createFromFormat(
-                'Y-m-d H:i:s.vO', $responseArray['timestamp']
-                )->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.vO'),
+            'dateOfCreation' => (new DateTimeImmutable('@'.$responseArray['created']))
+                ->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s.vO'),
             'amount' => $responseArray['amount'],
             'currency' => $responseArray['currency'],
-            'cardBin' => $responseArray['card']['bin'],
+            'cardBin' => $responseArray['card']['first6'],
         ];
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Payment\Gateway\ACI;
+namespace App\Charging\PaymentGateway\ACI;
 
 /**
  * This class is like a data container for ACI's payment request
  */
-class CreateSyncPaymentRequest extends ACIAbstractRequest
+class CreateSyncChargingRequest extends ACIAbstractRequest
 {
     private string $entityId;
 

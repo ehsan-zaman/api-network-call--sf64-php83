@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Payment\Gateway\Shift4;
+namespace App\Charging\PaymentGateway\Shift4;
 
-use App\Payment\Interface\ResponseFormatterInterface;
+use App\Charging\Interface\ResponseFormatterInterface;
 use InvalidArgumentException;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 

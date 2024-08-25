@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Object\DTO\PaymentRequestDTO;
-use App\Payment\Object\PaymentGateway;
-use App\Service\PaymentService;
+use App\Object\DTO\ChargingRequestDTO;
+use App\Charging\Object\PaymentGateway;
+use App\Service\ChargingService;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -20,15 +20,15 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsCommand(
-    name: 'app:pay',
-    description: 'Tries to pay using provided arguments',
+    name: 'app:charge',
+    description: 'Tries to charge using provided arguments',
     hidden: false
 )]
-class PayCommand extends Command
+class ChargeCommand extends Command
 {
     private array $allowedPaymentGatewayValues = [];
 
-    public function __construct(private ValidatorInterface $validator, private PaymentService $paymentService)
+    public function __construct(private ValidatorInterface $validator, private ChargingService $chargingService)
     {
         $this->allowedPaymentGatewayValues = array_column(PaymentGateway::cases(), 'value');
 
@@ -39,7 +39,7 @@ class PayCommand extends Command
     {
         $this
             ->addArgument('gateway', InputArgument::REQUIRED, 'Payment gateway name. Available: ' . implode(', ', $this->allowedPaymentGatewayValues))
-            ->addOption('amount', null, InputOption::VALUE_REQUIRED, 'Amount to pay')
+            ->addOption('amount', null, InputOption::VALUE_REQUIRED, 'Amount to charge')
         ;
     }
 
@@ -60,12 +60,12 @@ class PayCommand extends Command
             ['dtoAttr' => 'cvv', 'questionLabel' => 'CVV'],
         ];
 
-        $paymentRequestDTO = new PaymentRequestDTO();
+        $chargingRequestDTO = new ChargingRequestDTO();
 
         /** @var QuestionHelper */
         $helper = $this->getHelper('question');
 
-        $paymentRequestDTO = new PaymentRequestDTO();
+        $chargingRequestDTO = new ChargingRequestDTO();
 
         $output->writeln('Please provide values for following parameters');
 
@@ -78,7 +78,7 @@ class PayCommand extends Command
 
             $question = new Question($questionLabel . ': ');
             $answer = $helper->ask($input, $output, $question);
-            $error = $this->validator->validatePropertyValue(PaymentRequestDTO::class, $dtoAttr, $answer);
+            $error = $this->validator->validatePropertyValue(ChargingRequestDTO::class, $dtoAttr, $answer);
             if (count($error) > 0) {
                 $output->writeln('<error>' . $error->get(0)->getMessage() . '</error>');
                 continue;
@@ -86,14 +86,14 @@ class PayCommand extends Command
             $index++;
             $setterMethod = 'set' . ucfirst($dtoAttr);
             $getterMethod = 'get' . ucfirst($dtoAttr);
-            $paymentRequestDTO->$setterMethod($answer);
-            $questionAnserwsForConfirmation[] = $questionLabel . ': '. $paymentRequestDTO->$getterMethod($answer);;
+            $chargingRequestDTO->$setterMethod($answer);
+            $questionAnserwsForConfirmation[] = $questionLabel . ': '. $chargingRequestDTO->$getterMethod($answer);;
         }
 
         /** @var FormatterHelper */
         $formatter = $this->getHelper('formatter');
         $confirmationMessages = [
-            'Trying to perform the payment operation using the following arguments. Some of the answers might have been formatted.',
+            'Trying to perform the charging operation using the following arguments. Some of the answers might have been formatted.',
             implode('; ', $questionAnserwsForConfirmation)
         ];
         $formattedBlock = $formatter->formatBlock($confirmationMessages, 'info');
@@ -108,7 +108,7 @@ class PayCommand extends Command
         $output->writeln('Response:');
 
         try {
-            $result = $this->paymentService->charge($paymentRequestDTO, $paymentGateway);
+            $result = $this->chargingService->charge($chargingRequestDTO, $paymentGateway);
             $output->writeln('Success.');
             $output->writeln('Data:');
             foreach ($result as $key => $value) {

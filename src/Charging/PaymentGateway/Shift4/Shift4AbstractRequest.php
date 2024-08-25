@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Payment\Gateway\Shift4;
+namespace App\Charging\PaymentGateway\Shift4;
 
-use App\Payment\AbstractRequest;
+use App\Charging\AbstractRequest;
 
 abstract class Shift4AbstractRequest extends AbstractRequest
 {

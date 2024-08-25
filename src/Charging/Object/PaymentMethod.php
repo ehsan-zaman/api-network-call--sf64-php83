@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Payment\Object;
+namespace App\Charging\Object;
 
 enum PaymentGateway: string
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Payment\Gateway\ACI;
+namespace App\Charging\PaymentGateway\ACI;
 
-use App\Payment\Interface\ResponseFormatterInterface;
+use App\Charging\Interface\ResponseFormatterInterface;
 use InvalidArgumentException;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 

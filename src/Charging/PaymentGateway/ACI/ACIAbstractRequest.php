@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Payment\Gateway\ACI;
+namespace App\Charging\PaymentGateway\ACI;
 
-use App\Payment\AbstractRequest;
+use App\Charging\AbstractRequest;
 
 abstract class ACIAbstractRequest extends AbstractRequest
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Payment\Interface;
+namespace App\Charging\Interface;
 
 use App\Interface\Arrayable;
 

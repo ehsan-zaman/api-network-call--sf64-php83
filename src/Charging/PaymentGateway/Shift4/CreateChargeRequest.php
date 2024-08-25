@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Payment\Gateway\Shift4;
+namespace App\Charging\PaymentGateway\Shift4;
 
 /**
  * This class is like a data container for Shift4's create charge request

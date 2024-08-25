@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Payment;
+namespace App\Charging;
 
-use App\Payment\Interface\RequestInterface;
+use App\Charging\Interface\RequestInterface;
 
 abstract class AbstractRequest implements RequestInterface
 {

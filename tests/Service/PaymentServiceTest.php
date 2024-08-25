@@ -2,13 +2,13 @@
 
 namespace App\Tests\Service;
 
-use App\Object\DTO\PaymentRequestDTO;
-use App\Payment\Object\PaymentGateway;
-use App\Service\PaymentService;
+use App\Object\DTO\ChargingRequestDTO;
+use App\Charging\Object\PaymentGateway;
+use App\Service\ChargingService;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class PaymentServiceTest extends KernelTestCase
+class ChargingServiceTest extends KernelTestCase
 {
     public function testShift4(): void
     {
@@ -42,16 +42,16 @@ class PaymentServiceTest extends KernelTestCase
     {
         $container = static::getContainer();
 
-        /** @var PaymentService */
-        $paymentService = $container->get(PaymentService::class);
+        /** @var ChargingService */
+        $chargingService = $container->get(ChargingService::class);
 
-        return $paymentService->charge($this->generatePaymentRequestDTO($paymentGateway, ['erroneous_data' => 'error' === $testType]), $paymentGateway);
+        return $chargingService->charge($this->generateChargingRequestDTO($paymentGateway, ['erroneous_data' => 'error' === $testType]), $paymentGateway);
     }
 
-    private function generatePaymentRequestDTO(PaymentGateway $paymentGateway, array $options = []): PaymentRequestDTO
+    private function generateChargingRequestDTO(PaymentGateway $paymentGateway, array $options = []): ChargingRequestDTO
     {
-        $paymentRequestDTO = new PaymentRequestDTO();
-        $paymentRequestDTO
+        $chargingRequestDTO = new ChargingRequestDTO();
+        $chargingRequestDTO
             ->setCurrency('EUR')
             ->setCardNumber(PaymentGateway::ACI === $paymentGateway ? '4200000000000000' : '4242424242424242');
 
@@ -66,12 +66,12 @@ class PaymentServiceTest extends KernelTestCase
             $cvv = '456';
         }
 
-        $paymentRequestDTO
+        $chargingRequestDTO
             ->setAmount($amount)
             ->setCardExpYear($cardExpYear)
             ->setCardExpMonth($cardExpMonth)
             ->setCvv($cvv);
 
-        return $paymentRequestDTO;
+        return $chargingRequestDTO;
     }
 }

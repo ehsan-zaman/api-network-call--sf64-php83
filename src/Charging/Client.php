@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Payment;
+namespace App\Charging;
 
-use App\Payment\Interface\RequestInterface;
-use App\Payment\Interface\ResponseFormatterInterface;
+use App\Charging\Interface\RequestInterface;
+use App\Charging\Interface\ResponseFormatterInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
 /**
